@@ -116,4 +116,4 @@ dist
 .pnp.*
 
 #discord bot token
-key
+key.js
