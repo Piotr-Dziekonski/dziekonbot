@@ -1,0 +1,24 @@
+{
+  "name": "dziekonbot",
+  "version": "1.0.0",
+  "description": "a discord bot",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Piotr-Dziekonski/dziekonbot.git"
+  },
+  "author": "Piotr Dziekonski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Piotr-Dziekonski/dziekonbot/issues"
+  },
+  "homepage": "https://github.com/Piotr-Dziekonski/dziekonbot#readme",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "jsdom": "^16.4.0",
+    "node-fetch": "^2.6.1"
+  }
+}
