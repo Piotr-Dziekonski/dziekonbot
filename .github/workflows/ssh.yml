@@ -1,11 +1,14 @@
 name: remote ssh command
 on: [push]
 jobs:
-
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
+      with:
+       repository: Piotr-Dziekonski/dziekonbot
+       token: ${{ secrets.ACCESS_TOKEN }}
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
@@ -13,4 +16,21 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        script: whoami
+        script: |
+          if [ -d Projects/ ];
+          then cd Projects;
+          else mkdir Projects;
+          cd Projects;
+          fi;
+          if [ -d dziekonbot/ ];
+          then cd dziekonbot;
+          git stash;
+          git fetch;
+          git pull;    
+          else git clone git@github.com:Piotr-Dziekonski/dziekonbot.git;
+          cd dziekonbot;
+          fi
+          npm install
+          forever stop dziekonbot
+          forever start -a --uid dziekonbot bot.js
+          
