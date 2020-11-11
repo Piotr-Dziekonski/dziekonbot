@@ -38,7 +38,7 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: dziekonbot:latest
+          tags: ${{secrets.DOCKER_HUB_USERNAME}}/dziekonbot:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
