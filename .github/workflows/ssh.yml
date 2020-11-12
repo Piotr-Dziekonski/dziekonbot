@@ -25,9 +25,9 @@ jobs:
           if [ -d dziekonbot/ ];
           then cd dziekonbot;
           git stash;
-          git fetch;
-          git pull;    
-          else git clone git@github.com:Piotr-Dziekonski/dziekonbot.git;
+          git fetch https://${{ secrets.USERNAME }}:${{ secrets.ACCESS_TOKEN }}@github.com/Piotr-Dziekonski/dziekonbot.git;
+          git pull https://${{ secrets.USERNAME }}:${{ secrets.ACCESS_TOKEN }}@github.com/Piotr-Dziekonski/dziekonbot.git;    
+          else git clone https://${{ secrets.USERNAME }}:${{ secrets.ACCESS_TOKEN }}@github.com/Piotr-Dziekonski/dziekonbot.git
           cd dziekonbot;
           fi
           npm install
