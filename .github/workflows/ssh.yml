@@ -31,6 +31,8 @@ jobs:
           cd dziekonbot;
           fi
           npm install
-          forever stop dziekonbot
-          forever start -a --uid dziekonbot bot.js
+          docker build --tag dziekonbot .
+          docker stop dziekonbot
+          docker rm dziekonbot
+          docker run --detach --name dziekonbot dziekonbot:latest
           
