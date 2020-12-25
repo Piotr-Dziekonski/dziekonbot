@@ -92,11 +92,10 @@ const vis = async () => {
       const dom = new JSDOM(data);
       const div = dom.window.document.querySelector("article.forum-post")
       const span = div.querySelector("span.forum-post__body")
-      const brs = span.querySelectorAll('br');
 
-      const regex = /(?<=(\/div>))(<br>)*(.*?)(<br>)*(?=<div)/gm
+      const regex = /(?<=\/div>)<br><br>.*?(?=<div)/gm
       const str = span.innerHTML
-      const groupToMatch = 3
+
       let matchIndex = 1
       const slots = {Slot1: "", Slot2: ""}
 
@@ -105,10 +104,8 @@ const vis = async () => {
           regex.lastIndex++;
         }
 
-        m.forEach((match, groupIndex) => {
-          if(groupIndex === groupToMatch){
-            slots[`Slot${matchIndex}`] = match.split('<br>').join('\n');
-          }
+        m.forEach((match) => {
+          slots[`Slot${matchIndex}`] = match.split('<br>').join('\n');
         });
 
         matchIndex++
