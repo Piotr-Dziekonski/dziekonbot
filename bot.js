@@ -240,11 +240,12 @@ const tms = async () => {
         }
       });
 
-      console.log(stock)
+      const validDate = dom.window.document.querySelector("i").textContent
 
       const embed = {
         embed: {
           "title": "Travelling Merchant's Shop",
+          "description": `*${validDate}* \n\u200b`,
           "color": 370943,
           "fields": [{
               "name": stock[0][0],
