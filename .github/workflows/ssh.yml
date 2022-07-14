@@ -32,6 +32,8 @@ jobs:
           cd dziekonbot;
           fi;
           npm install;
+          echo -e "const KEY = \"${{ secrets.DISCORD_BOT_KEY }}\"" > key.js
+          echo -e "module.exports = KEY" >> key.js
           docker build --tag dziekonbot . &&
           docker stop dziekonbot &&
           docker rm dziekonbot &&
