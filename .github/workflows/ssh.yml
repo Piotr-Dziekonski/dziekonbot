@@ -5,19 +5,20 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-       repository: Piotr-Dziekonski/dziekonbot
-       token: ${{ secrets.ACCESS_TOKEN }}
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        script: |
-          if [ -d Projects/ ];
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          cd ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/private
+          sudo chmod 600 ~/.ssh/private
+          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+      - name: Connect, build the app and restart the server via SSH
+        run: |
+          ssh -i ~/.ssh/private $SSH_USERNAME@$SSH_HOST 'if [ -d Projects/ ];
           then cd Projects;
           else mkdir Projects;
           cd Projects;
@@ -26,13 +27,18 @@ jobs:
           then cd dziekonbot;
           git stash;
           git fetch https://${{ secrets.USERNAME }}:${{ secrets.ACCESS_TOKEN }}@github.com/Piotr-Dziekonski/dziekonbot.git;
-          git pull https://${{ secrets.USERNAME }}:${{ secrets.ACCESS_TOKEN }}@github.com/Piotr-Dziekonski/dziekonbot.git;    
-          else git clone https://${{ secrets.USERNAME }}:${{ secrets.ACCESS_TOKEN }}@github.com/Piotr-Dziekonski/dziekonbot.git
+          git pull https://${{ secrets.USERNAME }}:${{ secrets.ACCESS_TOKEN }}@github.com/Piotr-Dziekonski/dziekonbot.git; 
+          else git clone https://${{ secrets.USERNAME }}:${{ secrets.ACCESS_TOKEN }}@github.com/Piotr-Dziekonski/dziekonbot.git;
           cd dziekonbot;
-          fi
-          npm install
-          docker build --tag dziekonbot .
-          docker stop dziekonbot
-          docker rm dziekonbot
-          docker run --detach --name dziekonbot dziekonbot:latest
+          fi;
+          npm install;
+          docker build --tag dziekonbot . &&
+          docker stop dziekonbot &&
+          docker rm dziekonbot &&
+          docker run --detach --name dziekonbot dziekonbot:latest;'
+        shell: bash
+        env:
+          SSH_HOST: ${{secrets.HOST}}
+          SSH_USERNAME: ${{secrets.USERNAME}}
+
           
