@@ -3,28 +3,29 @@
  *  SPOODER
  *
  */
+const { getCurrentTime } = require("../lib/utility");
+
 const spooder = async () => {
-  const seconds_in_day = 24 * 60 * 60
-  const seconds_in_minute = 60
+  const secondsInDay = 24 * 60 * 60
   const interval = 4
-  const rotation_count = 3
+  const rotationCount = 3
   const offset = 3
 
-  const days_after_utc = Math.floor((Date.now() / 1000) / seconds_in_day)
-  const days_into_period = (days_after_utc + offset) % (interval * rotation_count)
+  const daysAfterUtc = Math.floor((getCurrentTime() / 1000) / secondsInDay)
+  const daysIntoPeriod = (daysAfterUtc + offset) % (interval * rotationCount)
 
-  const rotation = Math.floor(days_into_period / interval) + 1
-  const days_until_next_rotation = interval - days_into_period % interval
+  const closedPathIndex = Math.floor(daysIntoPeriod / interval) + 1
+  const daysUntilNextRotation = interval - daysIntoPeriod % interval
 
   const openPaths = ["Minion", "Acid", "Darkness"]
 
-  const closedPathString = openPaths[rotation - 1]
+  const closedPathString = openPaths[closedPathIndex - 1]
 
   return {
     embed: {
 
       "title": "Araxxor",
-      "description": `Currently closed path: **${closedPathString}**\n\n**${days_until_next_rotation}** days until next rotation`,
+      "description": `Currently closed path: **${closedPathString}**\n\n**${daysUntilNextRotation}** days until next rotation`,
       "color": 1604096,
       "author": {
         "name": "Dziekonbot",
