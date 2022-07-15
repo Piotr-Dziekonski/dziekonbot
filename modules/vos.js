@@ -3,6 +3,8 @@
  *  VoS
  *
  */
+const fetch = require('node-fetch');
+
 const voice = async () => {
 
   return await fetch('https://api.weirdgloop.org/runescape/vos/history')
@@ -10,37 +12,7 @@ const voice = async () => {
     .then(data => {
 
       const voices = [data.data[0].district1, data.data[0].district2]
-      voices.forEach((voice, index) => {
-        switch (voice) {
-          case "Hefin":
-            voices[index] = "```diff\n- Hefin -```"
-            break;
-          case "Crwys":
-            voices[index] = "```fix\n- Crwys -```"
-            break;
-          case "Ithell":
-            voices[index] = "```xl\n- Ithell -```"
-            break;
-          case "Meilyr":
-            voices[index] = "```prolog\n' Meilyr '```"
-            break;
-          case "Amlodd":
-            voices[index] = "```md\n# Amlodd #```"
-            break;
-          case "Iorwerth":
-            voices[index] = "```py\n# Iorwerth #```"
-            break;
-          case "Trahaearn":
-            voices[index] = "```cs\n# Trahaearn #```"
-            break;
-          case "Cadarn":
-            voices[index] = "```css\n- Cadarn -```"
-            break;
-
-          default:
-            break;
-        }
-      })
+      const formattedVoices = voices.map(voice => formatDistrict(voice))
 
       return {
         embed: {
@@ -49,12 +21,12 @@ const voice = async () => {
           "fields": [
             {
               "name": "District 1:",
-              "value": voices[0],
+              "value": formattedVoices[0],
               "inline": true
             },
             {
               "name": "District 2:",
-              "value": voices[1],
+              "value": formattedVoices[1],
               "inline": true
             }
           ],
@@ -68,6 +40,38 @@ const voice = async () => {
         }
       }
     });
+}
+
+const formatDistrict = voice => {
+  switch (voice) {
+    case "Hefin":
+      voice = "```diff\n- Hefin -```"
+      break;
+    case "Crwys":
+      voice = "```fix\n- Crwys -```"
+      break;
+    case "Ithell":
+      voice = "```xl\n- Ithell -```"
+      break;
+    case "Meilyr":
+      voice = "```prolog\n' Meilyr '```"
+      break;
+    case "Amlodd":
+      voice = "```md\n# Amlodd #```"
+      break;
+    case "Iorwerth":
+      voice = "```py\n# Iorwerth #```"
+      break;
+    case "Trahaearn":
+      voice = "```cs\n# Trahaearn #```"
+      break;
+    case "Cadarn":
+      voice = "```css\n- Cadarn -```"
+      break;
+    default:
+      break;
+  }
+  return voice;
 }
 
 module.exports = voice;
