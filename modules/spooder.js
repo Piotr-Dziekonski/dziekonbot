@@ -14,12 +14,10 @@ const spooder = async () => {
   const daysAfterUtc = Math.floor((getCurrentTime() / 1000) / secondsInDay)
   const daysIntoPeriod = (daysAfterUtc + offset) % (interval * rotationCount)
 
-  const closedPathIndex = Math.floor(daysIntoPeriod / interval) + 1
+  const closedPathIndex = Math.floor(daysIntoPeriod / interval)
   const daysUntilNextRotation = interval - daysIntoPeriod % interval
 
-  const openPaths = ["Minion", "Acid", "Darkness"]
-
-  const closedPathString = openPaths[closedPathIndex - 1]
+  const closedPathString = getClosedPath(closedPathIndex)
 
   return {
     embed: {
@@ -37,6 +35,11 @@ const spooder = async () => {
 
     }
   }
+}
+
+const getClosedPath = (closedPathIndex) => {
+  const openPaths = ["Minion", "Acid", "Darkness"]
+  return openPaths[closedPathIndex]
 }
 
 module.exports = spooder;
